@@ -6,23 +6,23 @@ import { ConfigService } from '@nestjs/config';
  * @class
  */
 @Injectable()
-export class AppConfigService {
+export class MysqlConfigService {
   constructor(private configService: ConfigService) {}
 
-  get name(): string {
-    return this.configService.get<string>('app.name');
-  }
-  get env(): string {
-    return this.configService.get<string>('app.env');
-  }
-  get url(): string {
-    return this.configService.get<string>('app.url');
+  get host(): string {
+    return this.configService.get<string>('db.host');
   }
   get port(): number {
-    return Number(this.configService.get<number>('app.port'));
+    return Number(this.configService.get<number>('db.port'));
+  }
+  get database(): string {
+    return this.configService.get<string>('db.database');
+  }
+  get username(): number {
+    return Number(this.configService.get<number>('db.username'));
   }
 
-  get jsonLimit(): string {
-    return this.configService.get<string>('app.jsonLimit');
+  get password(): string {
+    return this.configService.get<string>('db.password');
   }
 }

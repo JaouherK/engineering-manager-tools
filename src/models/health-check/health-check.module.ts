@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { HealthCheckController } from './healthCheck.controller';
+import { HealthCheckController } from './health-check.controller';
 
 @Global()
 @Module({

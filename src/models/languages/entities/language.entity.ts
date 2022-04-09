@@ -1,34 +1,27 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { IReport } from '../interfaces/language.interface';
+/**
+ * Entity Schema for Languages.
+ *
+ * @class
+ */
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ILanguage } from '../interfaces/language.interface';
 
-@Entity({ name: 'reports' })
-export class Report implements IReport {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity({
+  name: 'languages',
+})
+export class Language implements ILanguage {
+  @PrimaryGeneratedColumn()
+  id: number;
   @Column()
-  email: string;
-
-  @Column({ nullable: true, default: null })
-  first_name: null | string;
-
-  @Column({ nullable: true, default: null })
-  last_name: null | string;
-
-  @Column({ nullable: true, default: null })
-  position: null | string;
-
-  @Column({ default: true })
-  status: boolean;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
+  name: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: string;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: string;
 }

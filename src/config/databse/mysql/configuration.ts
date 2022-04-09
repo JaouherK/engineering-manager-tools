@@ -1,8 +1,8 @@
 import { registerAs } from '@nestjs/config';
-export default registerAs('app', () => ({
-  env: process.env.APP_ENV,
-  name: process.env.APP_NAME,
-  url: process.env.APP_URL,
-  port: process.env.APP_PORT,
-  jsonLimit: process.env.jsonLimit,
+export default registerAs('db', () => ({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
 }));

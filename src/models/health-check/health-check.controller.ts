@@ -1,9 +1,9 @@
-import { Controller, Get, Header, HttpCode } from '@nestjs/common';
+import { Controller, Get, Header, HttpCode, HttpStatus } from '@nestjs/common';
 
 @Controller('/_health')
 export class HealthCheckController {
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Header('Cache-Control', 'none')
   health(): { status: string } {
     return { status: 'OK' };
