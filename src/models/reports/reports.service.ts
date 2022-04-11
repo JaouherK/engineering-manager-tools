@@ -1,32 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ReportsRepository } from './reports.repository';
-import { ReportEntity } from './serializers/report.serializer';
 import { CreateReportDto, EditReportDto } from './dto/repot.dto';
+
 @Injectable()
 export class ReportsService {
-
-  constructor(
-    @InjectRepository(ReportsRepository)
-    private readonly reportsRepository: ReportsRepository,
-  ) {}
-
-  async get(
-    id: string,
-    relations: string[] = [],
-    throwsException = false,
-  ): Promise<ReportEntity | null> {
-    return await this.reportsRepository.get(id, relations, throwsException);
+  create(createReportDto: CreateReportDto) {
+    return 'This action adds a new report';
   }
 
-  async create(inputs: CreateReportDto): Promise<ReportEntity> {
-    return await this.reportsRepository.createEntity(inputs);
+  findAll() {
+    return `This action returns all reports`;
   }
 
-  // async update(
-  //   report: ReportEntity,
-  //   inputs: EditReportDto,
-  // ): Promise<ReportEntity> {
-  //   return await this.reportsRepository.updateEntity(inputs);
-  // }
+  findOne(id: string) {
+    return `This action returns a #${id} report`;
+  }
+
+  update(id: string, editReportDto: EditReportDto) {
+    return `This action updates a #${id} report`;
+  }
+
+  remove(id: string) {
+    return `This action removes a #${id} report`;
+  }
 }
