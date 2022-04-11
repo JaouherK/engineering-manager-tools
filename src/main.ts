@@ -4,6 +4,9 @@ import * as bodyParser from 'body-parser';
 import { AppConfigService } from './config/app/configuration.service';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './common/exceptions/http-exception.filter';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +19,9 @@ async function bootstrap() {
       disableErrorMessages: appConfig.env !== 'development',
     }),
   );
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new LoggingInterceptor(), new TimeoutInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Engineering Manager tools')
