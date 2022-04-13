@@ -7,11 +7,30 @@ import { GeneralModule } from './models/general/general.module';
 import { ReportsModule } from './models/reports/reports.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import helmet from 'helmet';
+import { MysqlDatabaseProviderModule } from './providers/database/mysql/provider.module';
+import { AuthenticationModule } from './authx/authentication/authentication.module';
+import { UsersModule } from './models/users/users.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './authx/authentication/jwt/jwt-auth.guard';
 
 @Module({
-  imports: [AppConfigModule, GeneralModule, ReportsModule],
+  imports: [
+    AppConfigModule,
+    GeneralModule,
+    ReportsModule,
+    MysqlDatabaseProviderModule,
+    AuthenticationModule,
+    UsersModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, AppConfigService],
+  providers: [
+    AppService,
+    AppConfigService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -5,24 +5,27 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { IReport } from '../interfaces/report.interface';
+import { IUser } from '../interfaces/user.interface';
 
-@Entity({ name: 'reported' })
-export class Report implements IReport {
+@Entity({ name: 'users' })
+export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column({ unique: true })
+  password: string;
 
   @Column({ nullable: true, default: null })
   first_name: null | string;
 
   @Column({ nullable: true, default: null })
   last_name: null | string;
-
-  @Column({ nullable: true, default: null })
-  position: null | string;
 
   @Column({ default: true })
   status: boolean;

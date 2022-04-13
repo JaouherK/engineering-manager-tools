@@ -18,8 +18,8 @@ export class MysqlConfigService {
   get database(): string {
     return this.configService.get<string>('db.database');
   }
-  get username(): number {
-    return Number(this.configService.get<number>('db.username'));
+  get username(): string {
+    return this.configService.get<string>('db.username');
   }
 
   get password(): string {

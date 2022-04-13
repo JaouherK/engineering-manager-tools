@@ -4,6 +4,8 @@ import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { MysqlConfigService } from '../../../config/databse/mysql/configuration.service';
 import { MysqlConfigModule } from '../../../config/databse/mysql/configuration.module';
 import { Language } from '../../../models/languages/entities/language.entity';
+import { Report } from '../../../models/reports/entities/report.entity';
+import { User } from '../../../models/users/entities/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -12,10 +14,10 @@ import { Language } from '../../../models/languages/entities/language.entity';
         type: 'mysql' as DatabaseType,
         host: mysqlConfigService.host,
         port: mysqlConfigService.port,
-        username: mysqlConfigService.username,
-        password: mysqlConfigService.password,
+        username: 'root',
+        password: '',
         database: mysqlConfigService.database,
-        entities: [Language],
+        entities: [Language, Report, User],
         synchronize: true,
       }),
       inject: [MysqlConfigService],

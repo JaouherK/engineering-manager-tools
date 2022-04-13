@@ -1,25 +1,49 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportDto, EditReportDto } from './dto/repot.dto';
+import { Report } from './entities/report.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PaginationHelper } from '../../common/helpers/response/pagination.helper';
 
 @Injectable()
 export class ReportsService {
-  create(createReportDto: CreateReportDto) {
-    return 'This action adds a new report';
+  constructor(
+    @InjectRepository(Report)
+    private reportsRepository: Repository<Report>,
+  ) {}
+
+  create(createUserDto: CreateReportDto): Promise<Report> {
+    const report = new Report();
+    report.email = createUserDto.email;
+    report.first_name = createUserDto.first_name;
+    report.last_name = createUserDto.last_name;
+    report.status = createUserDto.status;
+    return this.reportsRepository.save(report);
   }
 
-  findAll() {
-    return `This action returns all reports`;
+  async findAll(status: boolean, take: number, skip: number) {
+    const data = await this.reportsRepository.findAndCount({
+      order: { createdAt: 'DESC' },
+      take,
+      skip,
+    });
+    return new PaginationHelper().paginateResponse(data, take, skip);
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} report`;
+  async findOne(id: string) {
+    return await this.reportsRepository.findOneOrFail(id);
   }
 
-  update(id: string, editReportDto: EditReportDto) {
-    return `This action updates a #${id} report`;
+  async update(id: string, editReportDto: EditReportDto) {
+    const newReport = {
+      ...(await this.reportsRepository.findOne(id)),
+      ...editReportDto,
+    };
+    return this.reportsRepository.save(newReport);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} report`;
+  async remove(id: string) {
+    const deleteStatus = await this.reportsRepository.delete(id);
+    return { delete: deleteStatus.affected };
   }
 }

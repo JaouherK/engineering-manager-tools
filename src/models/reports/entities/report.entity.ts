@@ -7,12 +7,12 @@ import {
 } from 'typeorm';
 import { IReport } from '../interfaces/report.interface';
 
-@Entity({ name: 'reported' })
+@Entity({ name: 'reports' })
 export class Report implements IReport {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true, default: null })
@@ -21,8 +21,7 @@ export class Report implements IReport {
   @Column({ nullable: true, default: null })
   last_name: null | string;
 
-  @Column({ nullable: true, default: null })
-  position: null | string;
+  // @ManyToOne(type => User, student => student.projects) student: Student;
 
   @Column({ default: true })
   status: boolean;

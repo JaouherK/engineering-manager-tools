@@ -1,8 +1,14 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
-export class CreateReportDto {
+export class CreateUserDto {
   @IsEmail()
   email: string;
+
+  @IsNotEmpty()
+  username: string;
+
+  @IsNotEmpty()
+  password: string;
 
   @IsNotEmpty()
   first_name: string;
@@ -14,7 +20,7 @@ export class CreateReportDto {
   status = true;
 }
 
-export class EditReportDto {
+export class EditUserDto {
   @IsOptional()
   @IsEmail()
   email: string;
