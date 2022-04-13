@@ -27,15 +27,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       error = exception.message;
       statusCode = exception.getStatus();
-      message = exception.getResponse()['message'];
+      message =
+        exception.getResponse()['message'] !== exception.message
+          ? exception.getResponse()['message']
+          : null;
     } else if (exception instanceof QueryFailedError) {
       error = exception.message;
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = error;
     } else if (exception instanceof EntityNotFoundError) {
       error = exception.message;
       statusCode = HttpStatus.NOT_FOUND;
-      message = error;
     }
 
     const responseBody = {

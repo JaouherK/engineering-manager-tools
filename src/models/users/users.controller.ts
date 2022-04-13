@@ -11,6 +11,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, EditUserDto } from './dto/user.dto';
@@ -18,6 +19,11 @@ import { CreateUserDto, EditUserDto } from './dto/user.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
 
   @Post()
   create(@Body() createReportDto: CreateUserDto) {

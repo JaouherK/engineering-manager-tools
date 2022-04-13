@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { PaginationHelper } from '../../common/helpers/response/pagination.helper';
 import { CreateUserDto, EditUserDto } from './dto/user.dto';
+import { HashHelper } from '../../common/helpers/tools/hash.helper';
 
 @Injectable()
 export class UsersService {
@@ -12,13 +13,14 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
+    const hash = new HashHelper();
     user.email = createUserDto.email;
     user.first_name = createUserDto.first_name;
     user.last_name = createUserDto.last_name;
-    user.username = createUserDto.last_name;
-    user.password = createUserDto.password;
+    user.username = createUserDto.username;
+    user.password = await hash.hash(createUserDto.password);
     user.status = createUserDto.status;
     return this.usersRepository.save(user);
   }
