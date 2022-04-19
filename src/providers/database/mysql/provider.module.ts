@@ -6,6 +6,9 @@ import { MysqlConfigModule } from '../../../config/databse/mysql/configuration.m
 import { Language } from '../../../models/languages/entities/language.entity';
 import { Report } from '../../../models/reports/entities/report.entity';
 import { User } from '../../../models/users/entities/user.entity';
+import { Company } from '../../../models/companies/entities/company.entity';
+import { Task } from '../../../models/tasks/entities/task.entity';
+import { Feedback } from '../../../models/feedbacks/entities/feedback.entity';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -17,7 +20,7 @@ import { User } from '../../../models/users/entities/user.entity';
         username: 'root',
         password: '',
         database: mysqlConfigService.database,
-        entities: [Language, Report, User],
+        entities: [Language, Report, User, Company, Task, Feedback],
         synchronize: true,
       }),
       inject: [MysqlConfigService],

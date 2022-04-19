@@ -4,8 +4,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  RelationId,
+  OneToMany,
 } from 'typeorm';
 import { IReport } from '../interfaces/report.interface';
+import { User } from '../../users/entities/user.entity';
+import { Feedback } from '../../feedbacks/entities/feedback.entity';
 
 @Entity({ name: 'reports' })
 export class Report implements IReport {
@@ -21,7 +26,14 @@ export class Report implements IReport {
   @Column({ nullable: true, default: null })
   last_name: null | string;
 
-  // @ManyToOne(type => User, student => student.projects) student: Student;
+  @ManyToOne((type) => User, (user) => user.reports) user: User;
+
+  @Column()
+  @RelationId((report: Report) => report.user)
+  userId: string;
+
+  @OneToMany((type) => Feedback, (feedback) => feedback.report)
+  feedbacks: Feedback[];
 
   @Column({ default: true })
   status: boolean;

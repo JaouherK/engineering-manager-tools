@@ -35,13 +35,16 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.usersRepository.findOneOrFail(id);
+    return await this.usersRepository.findOneOrFail(id, {
+      relations: ['companies'],
+    });
   }
 
   async findByUsername(username: string) {
     return await this.usersRepository.findOne({
       where: {
         username,
+        status: true,
       },
     });
   }

@@ -13,16 +13,16 @@ import {
   ParseIntPipe,
   Request,
 } from '@nestjs/common';
-import { ReportsService } from './reports.service';
-import { CreateReportDto, EditReportDto } from './dto/repot.dto';
+import { TasksService } from './tasks.service';
+import { CreateTaskDto, EditTaskDto } from './dto/task.dto';
 
-@Controller('@me/reports')
-export class ReportsController {
-  constructor(private readonly reportsService: ReportsService) {}
+@Controller('@me/tasks')
+export class TasksController {
+  constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createReportDto: CreateReportDto, @Request() req) {
-    return this.reportsService.create(req.user.userId, createReportDto);
+  create(@Body() createTaskDto: CreateTaskDto, @Request() req) {
+    return this.tasksService.create(req.user.userId, createTaskDto);
   }
 
   @Get()
@@ -33,25 +33,25 @@ export class ReportsController {
     @Query('from', new DefaultValuePipe(0), ParseIntPipe) from: number,
     @Request() req,
   ) {
-    return this.reportsService.findAll(req.user.userId, status, step, from);
+    return this.tasksService.findAll(req.user.userId, status, step, from);
   }
 
   @Get(':id')
   findOne(@Param('id', new ParseUUIDPipe()) id: string, @Request() req) {
-    return this.reportsService.findOne(req.user.userId, id);
+    return this.tasksService.findOne(req.user.userId, id);
   }
 
   @Patch(':id')
   update(
     @Param('id', new ParseUUIDPipe()) id: string,
-    @Body() updateReportDto: EditReportDto,
+    @Body() updateTaskDto: EditTaskDto,
     @Request() req,
   ) {
-    return this.reportsService.update(req.user.userId, id, updateReportDto);
+    return this.tasksService.update(req.user.userId, id, updateTaskDto);
   }
 
   @Delete(':id')
   remove(@Param('id', new ParseUUIDPipe()) id: string, @Request() req) {
-    return this.reportsService.remove(req.user.userId, id);
+    return this.tasksService.remove(req.user.userId, id);
   }
 }

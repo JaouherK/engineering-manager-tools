@@ -12,17 +12,20 @@ export class ReportsService {
     private reportsRepository: Repository<Report>,
   ) {}
 
-  create(createUserDto: CreateReportDto): Promise<Report> {
+  create(userId: string, createUserDto: CreateReportDto): Promise<Report> {
     const report = new Report();
+
     report.email = createUserDto.email;
     report.first_name = createUserDto.first_name;
     report.last_name = createUserDto.last_name;
     report.status = createUserDto.status;
+    report.userId = userId;
     return this.reportsRepository.save(report);
   }
 
-  async findAll(status: boolean, take: number, skip: number) {
+  async findAll(userId: string, status: boolean, take: number, skip: number) {
     const data = await this.reportsRepository.findAndCount({
+      where: { userId },
       order: { createdAt: 'DESC' },
       take,
       skip,
@@ -30,19 +33,26 @@ export class ReportsService {
     return new PaginationHelper().paginateResponse(data, take, skip);
   }
 
-  async findOne(id: string) {
-    return await this.reportsRepository.findOneOrFail(id);
+  async findOne(userId: string, id: string) {
+    return await this.reportsRepository.findOneOrFail(id, {
+      where: { userId },
+    });
   }
 
-  async update(id: string, editReportDto: EditReportDto) {
+  async update(userId: string, id: string, editReportDto: EditReportDto) {
     const newReport = {
-      ...(await this.reportsRepository.findOne(id)),
+      ...(await this.reportsRepository.findOneOrFail(id, {
+        where: { userId },
+      })),
       ...editReportDto,
     };
     return this.reportsRepository.save(newReport);
   }
 
-  async remove(id: string) {
+  async remove(userId: string, id: string) {
+    await this.reportsRepository.findOneOrFail(id, {
+      where: { userId },
+    });
     const deleteStatus = await this.reportsRepository.delete(id);
     return { delete: deleteStatus.affected };
   }

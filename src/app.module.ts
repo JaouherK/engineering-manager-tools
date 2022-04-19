@@ -12,6 +12,9 @@ import { AuthenticationModule } from './authx/authentication/authentication.modu
 import { UsersModule } from './models/users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './authx/authentication/jwt/jwt-auth.guard';
+import { CompaniesModule } from './models/companies/companies.module';
+import { TasksModule } from './models/tasks/tasks.module';
+import { FeedbacksModule } from './models/feedbacks/feedbacks.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { JwtAuthGuard } from './authx/authentication/jwt/jwt-auth.guard';
     MysqlDatabaseProviderModule,
     AuthenticationModule,
     UsersModule,
+    CompaniesModule,
+    TasksModule,
+    FeedbacksModule,
   ],
   controllers: [AppController],
   providers: [
